@@ -26,6 +26,8 @@ The tool is designed for fast, repeatable promotion of solution updates across e
 - Publish customizations after import
 - Checks for connection references
 - Optionally saves the solutions
+- Updates the versions before export
+- Shows dependencies
 
 ## Notes
 

@@ -290,6 +290,19 @@ export class TransferWorkflowService {
     return /dependenc|missing component|required component|cannot be installed/i.test(message);
   }
 
+  private sortByImportOrder(solutions: SolutionItem[]): SolutionItem[] {
+    return [...solutions].sort((left, right) => {
+      const leftOrder = Number.isFinite(left.importOrder) ? left.importOrder : Number.MAX_SAFE_INTEGER;
+      const rightOrder = Number.isFinite(right.importOrder) ? right.importOrder : Number.MAX_SAFE_INTEGER;
+
+      if (leftOrder !== rightOrder) {
+        return leftOrder - rightOrder;
+      }
+
+      return left.friendlyName.localeCompare(right.friendlyName);
+    });
+  }
+
   private extractMissingDependenciesXml(message: string): string | null {
     const startIndex = message.indexOf("<MissingDependencies");
     if (startIndex < 0) {
@@ -479,7 +492,7 @@ export class TransferWorkflowService {
   }
 
   async transferSelectedSolutions(): Promise<void> {
-    const selected = this.context.getSelectedSolutions();
+    const selected = this.sortByImportOrder(this.context.getSelectedSolutions());
     if (selected.length === 0) {
       return;
     }

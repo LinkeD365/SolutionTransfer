@@ -143,6 +143,19 @@ export const SolutionTransferTool = observer(({ vm }: { vm: ViewModel }): React.
   const columnDefs = useMemo<ColDef[]>(
     () => [
       { headerName: "Friendly name", field: "friendlyName", minWidth: 220, flex: 1.4 },
+      {
+        headerName: "Import order",
+        field: "importOrder",
+        minWidth: 120,
+        flex: 0.6,
+        editable: true,
+        valueFormatter: ({ value }) => (Number.isFinite(Number(value)) ? String(value) : ""),
+        cellEditor: "agTextCellEditor",
+        valueParser: ({ newValue }) => {
+          const parsed = Number.parseInt(String(newValue), 10);
+          return Number.isFinite(parsed) ? parsed : null;
+        },
+      },
       { headerName: "Unique name", field: "uniqueName", minWidth: 220, flex: 1.2 },
       { headerName: "Source version", field: "version", minWidth: 140, flex: 0.8 },
       {
@@ -189,6 +202,14 @@ export const SolutionTransferTool = observer(({ vm }: { vm: ViewModel }): React.
     (event: SelectionChangedEvent) => {
       const selectedIds = event.api.getSelectedNodes().map((node) => String(node.data.id));
       vm.setSelectedSolutions(selectedIds);
+    },
+    [vm]
+  );
+
+  const handleImportOrderChanged = useCallback(
+    (solutionId: string, value: string) => {
+      const parsed = Number.parseInt(value, 10);
+      vm.updateSolutionImportOrder(solutionId, Number.isFinite(parsed) ? parsed : null);
     },
     [vm]
   );
@@ -257,6 +278,11 @@ export const SolutionTransferTool = observer(({ vm }: { vm: ViewModel }): React.
                           getRowId={(params) => params.data.id}
                           onGridReady={() => syncGridSelection()}
                           onSelectionChanged={handleSelectionChanged}
+                          onCellValueChanged={(params) => {
+                            if (params.colDef.field === "importOrder") {
+                              handleImportOrderChanged(String(params.data.id), String(params.newValue ?? ""));
+                            }
+                          }}
                         />
                       </div>
                     </div>

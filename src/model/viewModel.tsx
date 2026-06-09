@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, toJS } from "mobx";
 import {
   SolutionTransferService,
   type ImportMode,
@@ -15,6 +15,7 @@ export type SolutionItem = {
   version: string;
   isManaged: boolean;
   selected: boolean;
+  importOrder: number;
   targetVersion: string | null;
 };
 
@@ -105,6 +106,27 @@ export class ViewModel {
     });
   }
 
+  private async loadSavedConfiguration(): Promise<void> {
+    try {
+      const savedSettings = (await window.toolboxAPI.settings.getAll()) as Partial<TransferSettings>;
+      this.settings = {
+        ...this.settings,
+        ...savedSettings,
+      };
+    } catch (error) {
+      this.addLog(`Failed to load saved transfer settings: ${error instanceof Error ? error.message : "Unknown error"}`, "warning");
+    }
+  }
+
+  async saveConfiguration(): Promise<void> {
+    try {
+      await window.toolboxAPI.settings.setAll(toJS(this.settings) as TransferSettings);
+      this.addLog("Saved transfer settings.", "success");
+    } catch (error) {
+      this.addLog(`Failed to save transfer settings: ${error instanceof Error ? error.message : "Unknown error"}`, "error");
+    }
+  }
+
   get selectedSolutions(): SolutionItem[] {
     return this.solutions.filter((x) => x.selected);
   }
@@ -138,6 +160,7 @@ export class ViewModel {
   }
 
   async initialize(): Promise<void> {
+    await this.loadSavedConfiguration();
     await this.refreshConnections();
     if (this.sourceConnection && this.targetConnection) {
       await this.loadSolutions();
@@ -260,6 +283,19 @@ export class ViewModel {
     this.solutions = this.solutions.map((solution) => (solution.id === solutionId ? { ...solution, version } : solution));
   }
 
+  updateSolutionImportOrder(solutionId: string, importOrder: number | null): void {
+    const nextOrder = importOrder === null || !Number.isFinite(importOrder) ? null : Math.max(1, Math.trunc(importOrder));
+
+    this.solutions = this.solutions.map((solution) =>
+      solution.id === solutionId
+        ? {
+            ...solution,
+            importOrder: nextOrder ?? solution.importOrder,
+          }
+        : solution
+    );
+  }
+
   async loadSolutions(): Promise<void> {
     if (!this.sourceConnection) {
       this.addLog("Source connection is not available.", "error");
@@ -280,9 +316,10 @@ export class ViewModel {
       const targetVersions = await this.service.getTargetVersions(sourceSolutions.map((x) => x.uniqueName));
 
       runInAction(() => {
-        this.solutions = sourceSolutions.map((solution) => ({
+        this.solutions = sourceSolutions.map((solution, index) => ({
           ...solution,
           selected: false,
+          importOrder: index + 1,
           targetVersion: targetVersions.get(solution.uniqueName) ?? null,
         }));
       });

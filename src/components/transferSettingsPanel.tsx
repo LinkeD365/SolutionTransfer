@@ -4,6 +4,7 @@ import {
   AccordionHeader,
   AccordionItem,
   AccordionPanel,
+  Button,
   Card,
   CardHeader,
   Dropdown,
@@ -14,6 +15,7 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
+import { Save24Regular } from "@fluentui/react-icons";
 import { InfoLabel } from "@fluentui/react-components/unstable";
 import { observer } from "mobx-react";
 
@@ -86,7 +88,14 @@ export const TransferSettingsPanel = observer(({ vm, className }: TransferSettin
 
   return (
     <Card className={className}>
-      <CardHeader header={<Text weight="semibold">Transfer settings</Text>} />
+      <CardHeader
+        header={<Text weight="semibold">Transfer settings</Text>}
+        action={
+          <Button icon={<Save24Regular />} onClick={() => void vm.saveConfiguration()}>
+            Save settings
+          </Button>
+        }
+      />
       <div className={styles.cardBody}>
         <Accordion className={styles.accordion} collapsible multiple defaultOpenItems={["general", "export", "import"]}>
           <AccordionItem value="general">

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "displayName": "Solution Transfer Tool",
   "description": "Transfer Dataverse solutions between source and target environments",
+  "icon": "Linked365Logo.svg",
   "main": "index.html",
   "author": "LinkeD365",
   "license": "MIT",
@@ -22,12 +23,25 @@
       "url": "https://github.com/MsCRMTools"
     }
   ],
+    "configurations": {
+    "repository": "https://github.com/LinkeD365/SolutionTransfer",
+    "website": "https://linked365.blog",
+    "readmeUrl": "https://raw.githubusercontent.com/LinkeD365/SolutionTransfer/refs/heads/main/README.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LinkeD365/SolutionTransfer"
+  },
+  "bugs": {
+    "url": "https://github.com/LinkeD365/SolutionTransfer/issues"
+  },
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite",
     "watch": "vite build --watch",
     "preview": "vite preview",
-    "finalize-package": "npm shrinkwrap"
+    "finalize-package": "npm shrinkwrap",
+     "validate": "pptb-validate"
   },
   "dependencies": {
     "@fluentui/react-components": "^9.72.7",
