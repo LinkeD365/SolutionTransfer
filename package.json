@@ -1,6 +1,6 @@
 {
   "name": "@linked365/pptb-solution-transfer-tool",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "displayName": "Solution Transfer Tool",
   "description": "Transfer Dataverse solutions between source and target environments",
   "icon": "Linked365Logo.svg",
@@ -23,7 +23,7 @@
       "url": "https://github.com/MsCRMTools"
     }
   ],
-    "configurations": {
+  "configurations": {
     "repository": "https://github.com/LinkeD365/SolutionTransfer",
     "website": "https://linked365.blog",
     "readmeUrl": "https://raw.githubusercontent.com/LinkeD365/SolutionTransfer/refs/heads/main/README.md"
@@ -41,7 +41,7 @@
     "watch": "vite build --watch",
     "preview": "vite preview",
     "finalize-package": "npm shrinkwrap",
-     "validate": "pptb-validate"
+    "validate": "pptb-validate"
   },
   "dependencies": {
     "@fluentui/react-components": "^9.72.7",
