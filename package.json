@@ -1,6 +1,6 @@
 {
   "name": "@linked365/pptb-solution-transfer-tool",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "displayName": "Solution Transfer Tool",
   "description": "Transfer Dataverse solutions between source and target environments",
   "icon": "Linked365Logo.svg",
