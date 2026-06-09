@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica", "Arial", sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+#root {
+  height: 100vh;
+}
+
+.ag-theme-quartz {
+  --sm-row-zebra-even: #ffffff;
+  --sm-row-zebra-odd: #f6f8fb;
+  --sm-row-mismatch-bg: #fff1dc;
+  --sm-row-mismatch-fg: #613400;
+  --sm-version-match-bg: #d9f7be;
+  --sm-version-mismatch-bg: #fff7e6;
+}
+
+body[data-theme="dark"] .ag-theme-quartz,
+body[data-ag-theme-mode="dark"] .ag-theme-quartz {
+  --sm-row-zebra-even: #1f1f1f;
+  --sm-row-zebra-odd: #292929;
+  --sm-row-mismatch-bg: #3c2f1f;
+  --sm-row-mismatch-fg: #f3ddbf;
+  --sm-version-match-bg: #2b4a2e;
+  --sm-version-mismatch-bg: #4a3b24;
+}
+
+.ag-theme-quartz .ag-cell-version-match {
+  background-color: var(--sm-version-match-bg);
+  color: inherit;
+}
+
+.ag-theme-quartz .ag-cell-version-mismatch {
+  background-color: var(--sm-version-mismatch-bg);
+  color: inherit;
+}
+
+.ag-theme-quartz .ag-row.ag-row-version-mismatch:not(.ag-row-selected) .ag-cell:not(.ag-cell-version-match):not(.ag-cell-version-mismatch) {
+  background-color: var(--sm-row-mismatch-bg);
+  color: var(--sm-row-mismatch-fg);
+}
+
+.ag-theme-quartz .ag-row.ag-row-zebra-even:not(.ag-row-selected) .ag-cell:not(.ag-cell-version-match):not(.ag-cell-version-mismatch) {
+  background-color: var(--sm-row-zebra-even);
+}
+
+.ag-theme-quartz .ag-row.ag-row-zebra-odd:not(.ag-row-selected) .ag-cell:not(.ag-cell-version-match):not(.ag-cell-version-mismatch) {
+  background-color: var(--sm-row-zebra-odd);
+}
